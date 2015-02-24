@@ -53,8 +53,8 @@ public class Barber implements Runnable,Constants {
 					gui.fillBarberChair(this.pos, nextId);
 					gui.println("Barber" + Integer.toString(pos) + " is barbing..");
 					Thread.sleep(barberWork);
-					gui.emptyBarberChair(this.pos, nextId);
-					gui.println("Barber" + Integer.toString(pos) +" is done barbing")
+					gui.emptyBarberChair(this.pos);
+					gui.println("Barber" + Integer.toString(pos) +" is done barbing");
 
 				}
 				else {
