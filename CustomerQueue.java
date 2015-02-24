@@ -22,11 +22,23 @@ public class CustomerQueue {
     	// Incomplete
 	}
     
-    public void NewCustomer(Customer c) {
+    public synchronized void NewCustomer(Customer c) {
     	this.queue.add(c);
+    	this.notifyAll();
     }
-    public Customer NextCustomer() {
+
+
+    public synchronized Customer NextCustomer() {
     	return this.queue.remove();
+    	this.notify();
+    }
+
+
+    public boolean openspot() {
+    	if (queue.length() < queueLength) {
+    		return True;
+    	}
+    	return False;
     }
 
     // AddCustomer
