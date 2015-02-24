@@ -37,7 +37,9 @@ public class CustomerQueue implements Constants {
 
     public synchronized Customer NextCustomer() {
     	this.notifyAll();
-    	return this.queue.remove();
+    	Customer c = this.queue.remove();
+    	gui.emptyLoungeChair(position(c));
+    	return c;
     }
 
 
