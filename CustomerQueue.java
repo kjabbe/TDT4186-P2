@@ -29,16 +29,16 @@ public class CustomerQueue {
 
 
     public synchronized Customer NextCustomer() {
+    	this.notifyAll();
     	return this.queue.remove();
-    	this.notify();
     }
 
 
     public boolean openspot() {
-    	if (queue.length() < queueLength) {
-    		return True;
+    	if (queue.size() < queueLength) {
+    		return true;
     	}
-    	return False;
+    	return false;
     }
 
     // AddCustomer
