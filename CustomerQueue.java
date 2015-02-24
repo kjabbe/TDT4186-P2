@@ -24,13 +24,13 @@ public class CustomerQueue implements Constants {
     	// Incomplete
 	}
     
-    private int position() {
-        return (getCustomerID() % this.pos)+1;
+    private int position(Customer c) {
+        return (c.getCustomerID()-1) % this.pos;
     }
 
     public synchronized void NewCustomer(Customer c) {
     	this.queue.add(c);
-        BarbershopGui.fillLoungeChair(position(c), c)
+        gui.fillLoungeChair(position(c), c);
     	this.notifyAll();
     }
 
