@@ -55,7 +55,7 @@ public class Doorman implements Runnable,Constants {
 						queue.wait();
 					}
 				}
-				//Thread.sleep(r);				
+				Thread.sleep(r);				
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

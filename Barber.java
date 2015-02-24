@@ -38,7 +38,7 @@ public class Barber implements Runnable,Constants {
 	public void run() {
 		int barberSleep;
 		int barberWork;
-		Customer nextId;
+		Customer nextId = null;
 		int minSleep = MIN_BARBER_SLEEP;
 		int maxSleep = MAX_BARBER_SLEEP;
 		int minWork = MIN_BARBER_WORK;
@@ -47,31 +47,32 @@ public class Barber implements Runnable,Constants {
 			barberSleep = minSleep+(int)(Math.random()*(maxSleep-minSleep+1));
 			barberWork = minWork+(int)(Math.random()*(maxWork-minWork+1));
 			try {
-				if (queue.inqueue()) {
-					synchronized (queue) {
+				synchronized (queue) {
+					if (queue.inqueue()) { 
 						nextId = queue.NextCustomer();
-						gui.fillBarberChair(this.pos, nextId);
-						gui.println("Barber" + Integer.toString(pos) + " is barbing..");
-						Thread.sleep(barberWork);
-						gui.emptyBarberChair(this.pos);
-						gui.println("Barber" + Integer.toString(pos) +" is done barbing");
-						gui.println("Barber" + Integer.toString(pos) +" is daydreaming");
-						gui.barberIsSleeping(this.pos);
-						Thread.sleep(barberSleep);
-						gui.println("Barber" + Integer.toString(pos) +" is ready to work");
-						gui.barberIsAwake(this.pos);
-					}
-				} else {
-					synchronized (queue) {
+					} else {
 						gui.println("Barber" + Integer.toString(pos) + " is waiting for customers...");
 						queue.wait();
 						gui.println("Barber" + Integer.toString(pos) + " was notified of a new customer");
 					}
 				}
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+				if (nextId != null) {
+					gui.fillBarberChair(this.pos, nextId);
+					gui.println("Barber" + Integer.toString(pos) + " is barbing..");
+					Thread.sleep(barberWork);
+					gui.emptyBarberChair(this.pos);
+					gui.println("Barber" + Integer.toString(pos) +" is done barbing");
+					gui.println("Barber" + Integer.toString(pos) +" is daydreaming");
+					gui.barberIsSleeping(this.pos);
+					Thread.sleep(barberSleep);
+					gui.println("Barber" + Integer.toString(pos) +" is ready to work");
+					gui.barberIsAwake(this.pos); 
+					nextId = null;
+				}
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 	}
 }
