@@ -44,10 +44,10 @@ public class Barber implements Runnable,Constants {
 		int minWork = MIN_BARBER_WORK;
 		int maxWork = MAX_BARBER_WORK;
 		while (active){
-			synchronized (queue) {
-				barberSleep = minSleep+(int)(Math.random()*(maxSleep-minSleep+1));
-				barberWork = minWork+(int)(Math.random()*(maxWork-minWork+1));
-				try {
+			barberSleep = minSleep+(int)(Math.random()*(maxSleep-minSleep+1));
+			barberWork = minWork+(int)(Math.random()*(maxWork-minWork+1));
+			try {
+				synchronized (queue) {
 					if (queue.inqueue()) {
 						nextId = queue.NextCustomer();
 						gui.fillBarberChair(this.pos, nextId);
@@ -60,24 +60,17 @@ public class Barber implements Runnable,Constants {
 						Thread.sleep(barberSleep);
 						gui.println("Barber" + Integer.toString(pos) +" is ready to work");
 						gui.barberIsAwake(this.pos);
+					} else {
+						gui.println("Barber" + Integer.toString(pos) + " is waiting for customers...");
+						queue.wait();
+						gui.println("Barber" + Integer.toString(pos) + " was notified of a new customer");
 					}
-					else {
-							gui.println("Barber" + Integer.toString(pos) + " is waiting for customers...");
-							queue.wait();
-							gui.println("Barber" + Integer.toString(pos) + " was notified of a new customer");
-					}
-
-	
-					
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
-
 	}
-
-	// Add more methods as needed
 }
 

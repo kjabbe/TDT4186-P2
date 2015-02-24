@@ -40,10 +40,9 @@ public class Doorman implements Runnable,Constants {
 		int min = MIN_DOORMAN_SLEEP;
 		int max = MAX_DOORMAN_SLEEP;
 		while(active) {
-			synchronized (queue) {
-				r = min+(int)(Math.random()*(max-min+1));
-				try {
-					Thread.sleep(r);
+			r = min+(int)(Math.random()*(max-min+1));
+			try {
+				synchronized (queue) {
 					if (queue.openspot()) {
 						gui.println("Adding new customer to the queue.");
 						queue.NewCustomer(new Customer());
@@ -53,15 +52,12 @@ public class Doorman implements Runnable,Constants {
 						gui.println("Queue is full. Doorman going to sleep...");
 						queue.wait();
 					}
-	
-					
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
+					Thread.sleep(r);
+				}				
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			
 		}
 	}
 }
