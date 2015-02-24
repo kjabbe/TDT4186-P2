@@ -44,12 +44,12 @@ public class Doorman implements Runnable,Constants {
 			try {
 				Thread.sleep(r);
 				if (queue.openspot()) {
-					gui.println("Adding new customer to the queue");
+					gui.println("Adding new customer to the queue.");
 					queue.NewCustomer(new Customer());
 				}
 				else {
 					synchronized (queue) {
-						gui.println("Queue is full");
+						gui.println("Queue is full. Doorman going to sleep...");
 						queue.wait();
 					}
 				}

@@ -48,6 +48,10 @@ public class CustomerQueue implements Constants {
     	return false;
     }
 
+    public boolean inqueue() {
+        return (this.queue.size() > 0);
+    }
+
     // AddCustomer
     // queue length
     // PopCustomer
