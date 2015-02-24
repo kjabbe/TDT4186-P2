@@ -35,28 +35,31 @@ public class Barber implements Runnable,Constants {
 		this.active = false;
 	}
 
-	public void run() {
-		int r;
+	public synchronized void run() {
+		int barberSleep;
+		int barberWork;
 		Customer nextId;
-		int min = MIN_BARBER_SLEEP;
-		int max = MAX_BARBER_SLEEP;
+		int minSleep = MIN_BARBER_SLEEP;
+		int maxSleep = MAX_BARBER_SLEEP;
+		int minWork = MIN_BARBER_WORK;
+		int maxWork = MAX_BARBER_WORK;
 		while (active){
-			r = min+(int)(Math.random()*(max-min+1));
+			barberSleep = minSleep+(int)(Math.random()*(maxSleep-minSleep+1));
+			barberWork = minWork+(int)(Math.random()*(maxWork-minWork+1));
 			try {
-				Thread.sleep(r);
-				if (queue.inqueue()) {
+				Thread.sleep(barberSleep);
+				if (queue.inqueue() && gui.barberIsAwake(this.pos)) {
 					nextId = queue.NextCustomer();
-					
 					gui.fillBarberChair(this.pos, nextId);
-
-					gui.println("Barber" + Integer.toString(pos) + " was notified of a new customer");
-					
+					gui.println("Barber is barbing..")
+					Thread.sleep(barberWork);
+					gui.emptyBarbeerChari(this.pos, nextId);					
 				}
 				else {
-					synchronized (queue) {
 						gui.println("Barber" + Integer.toString(pos) + " is waiting for customers...");
+						gui.barberIsSleeping(this.pos);
 						queue.wait();
-					}
+						gui.println("Barber" + Integer.toString(pos) + " was notified of a new customer");
 				}
 
 				
