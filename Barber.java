@@ -47,7 +47,9 @@ public class Barber implements Runnable,Constants {
 			barberSleep = minSleep+(int)(Math.random()*(maxSleep-minSleep+1));
 			barberWork = minWork+(int)(Math.random()*(maxWork-minWork+1));
 			try {
+				gui.barberIsSleeping(this.pos);
 				Thread.sleep(barberSleep);
+				gui.barberIsAwake(this.pos);
 				if (queue.inqueue()) {
 					nextId = queue.NextCustomer();
 					gui.fillBarberChair(this.pos, nextId);
@@ -55,11 +57,9 @@ public class Barber implements Runnable,Constants {
 					Thread.sleep(barberWork);
 					gui.emptyBarberChair(this.pos);
 					gui.println("Barber" + Integer.toString(pos) +" is done barbing");
-
 				}
 				else {
 						gui.println("Barber" + Integer.toString(pos) + " is waiting for customers...");
-						gui.barberIsSleeping(this.pos);
 						queue.wait();
 						gui.println("Barber" + Integer.toString(pos) + " was notified of a new customer");
 				}
