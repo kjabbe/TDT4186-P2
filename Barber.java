@@ -44,17 +44,17 @@ public class Barber implements Runnable,Constants {
 			r = min+(int)(Math.random()*(max-min+1));
 			try {
 				Thread.sleep(r);
-				if (CustomerQueue.inqueue()) {
+				if (queue.inqueue()) {
 					nextId = queue.NextCustomer();
 					
 					gui.fillBarberChair(this.pos, nextId);
 
-					gui.println("Barber" + str(pos) + " was notified of a new customer");
+					gui.println("Barber" + Integer.toString(pos) + " was notified of a new customer");
 					
 				}
 				else {
-					synchronized ( ) {
-						gui.println("Barber" + str(pos) + " is waiting for customers...");
+					synchronized (queue) {
+						gui.println("Barber" + Integer.toString(pos) + " is waiting for customers...");
 						queue.wait();
 					}
 				}
