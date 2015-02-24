@@ -37,13 +37,18 @@ public class Barber implements Runnable,Constants {
 
 	public void run() {
 		int r;
+		Customer nextId;
 		int min = MIN_BARBER_SLEEP;
 		int max = MAX_BARBER_SLEEP;
-		while (){
+		while (active){
 			r = min+(int)(Math.random()*(max-min+1));
 			try {
 				Thread.sleep(r);
-				if () {
+				if (CustomerQueue.inqueue()) {
+					nextId = queue.NextCustomer();
+					
+					gui.fillBarberChair(this.pos, nextId);
+
 					gui.println("Barber" + str(pos) + " was notified of a new customer");
 					
 				}
