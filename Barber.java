@@ -44,8 +44,9 @@ public class Barber implements Runnable,Constants {
 		int minWork = MIN_BARBER_WORK;
 		int maxWork = MAX_BARBER_WORK;
 		while (active){
-			barberSleep = minSleep+(int)(Math.random()*(maxSleep-minSleep+1));
-			barberWork = minWork+(int)(Math.random()*(maxWork-minWork+1));
+			//uncomment to get variable speed.
+			barberSleep = Globals.barberSleep;//minSleep+(int)(Math.random()*(maxSleep-minSleep+1));
+			barberWork = Globals.barberWork;//minWork+(int)(Math.random()*(maxWork-minWork+1));
 			try {
 				synchronized (queue) {
 					if (queue.inqueue()) { 
